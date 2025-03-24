@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import '../main.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import '../config/web_config.dart';
 
 class BannerAdWidget extends StatefulWidget {
   const BannerAdWidget({Key? key}) : super(key: key);
@@ -20,8 +21,15 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
   }
 
   void _loadAd() {
+    if (kIsWeb) {
+      setState(() {
+        _isLoaded = true;
+      });
+      return;
+    }
+
     _bannerAd = BannerAd(
-      adUnitId: bannerAdUnitId,
+      adUnitId: WebConfig.bannerAdUnitId,
       size: AdSize.banner,
       request: const AdRequest(),
       listener: BannerAdListener(
@@ -32,7 +40,7 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
         },
         onAdFailedToLoad: (ad, error) {
           ad.dispose();
-          print('Ad failed to load: $error');
+          print('Banner ad failed to load: ${error.message}');
         },
       ),
     );
@@ -48,12 +56,30 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return _isLoaded && _bannerAd != null
-        ? Container(
-            width: _bannerAd!.size.width.toDouble(),
-            height: _bannerAd!.size.height.toDouble(),
-            child: AdWidget(ad: _bannerAd!),
-          )
-        : const SizedBox.shrink();
+    if (kIsWeb) {
+      return Container(
+        height: 50,
+        color: Colors.grey[200],
+        child: const Center(
+          child: Text(
+            'Advertisement',
+            style: TextStyle(
+              color: Colors.grey,
+              fontSize: 16,
+            ),
+          ),
+        ),
+      );
+    }
+
+    if (!_isLoaded) {
+      return const SizedBox.shrink();
+    }
+
+    return SizedBox(
+      width: _bannerAd!.size.width.toDouble(),
+      height: _bannerAd!.size.height.toDouble(),
+      child: AdWidget(ad: _bannerAd!),
+    );
   }
 }
