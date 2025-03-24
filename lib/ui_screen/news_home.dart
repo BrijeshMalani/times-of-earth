@@ -12,12 +12,18 @@ class NewsHome extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('News Portal'),
+        centerTitle: true,
       ),
-      body: Center(
-        child: Text(
-          'Welcome to News Portal',
-          style: TextStyle(fontSize: 24),
-        ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth > 1200) {
+            return _buildWebLayout();
+          } else if (constraints.maxWidth > 600) {
+            return _buildTabletLayout();
+          } else {
+            return _buildMobileLayout();
+          }
+        },
       ),
     );
   }
