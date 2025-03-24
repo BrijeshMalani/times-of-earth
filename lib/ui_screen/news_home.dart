@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../controllers/news_controller.dart';
 import '../models/news_model.dart';
 import '../ui_screen/news_detail.dart';
+import '../widgets/banner_ad_widget.dart';
 
 class NewsHome extends StatelessWidget {
   final NewsController controller = Get.put(NewsController());
@@ -25,6 +26,7 @@ class NewsHome extends StatelessWidget {
           }
         },
       ),
+      bottomNavigationBar: const BannerAdWidget(),
     );
   }
 

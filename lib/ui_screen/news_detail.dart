@@ -1,10 +1,31 @@
 import 'package:flutter/material.dart';
 import '../models/news_model.dart';
+import '../widgets/banner_ad_widget.dart';
+import '../services/interstitial_ad_service.dart';
 
-class NewsDetailPage extends StatelessWidget {
+class NewsDetailPage extends StatefulWidget {
   final News news;
 
   const NewsDetailPage({Key? key, required this.news}) : super(key: key);
+
+  @override
+  State<NewsDetailPage> createState() => _NewsDetailPageState();
+}
+
+class _NewsDetailPageState extends State<NewsDetailPage> {
+  final InterstitialAdService _interstitialAdService = InterstitialAdService();
+
+  @override
+  void initState() {
+    super.initState();
+    _interstitialAdService.loadAd();
+  }
+
+  @override
+  void dispose() {
+    _interstitialAdService.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +44,7 @@ class NewsDetailPage extends StatelessWidget {
               height: 300,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(news.imageUrl),
+                  image: NetworkImage(widget.news.imageUrl),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -41,7 +62,7 @@ class NewsDetailPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
-                      news.category,
+                      widget.news.category,
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -51,7 +72,7 @@ class NewsDetailPage extends StatelessWidget {
                   SizedBox(height: 16),
                   // Title
                   Text(
-                    news.title,
+                    widget.news.title,
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -64,7 +85,7 @@ class NewsDetailPage extends StatelessWidget {
                       Icon(Icons.person, size: 20, color: Colors.grey),
                       SizedBox(width: 8),
                       Text(
-                        news.author,
+                        widget.news.author,
                         style: TextStyle(
                           color: Colors.grey,
                           fontSize: 16,
@@ -74,7 +95,7 @@ class NewsDetailPage extends StatelessWidget {
                       Icon(Icons.calendar_today, size: 20, color: Colors.grey),
                       SizedBox(width: 8),
                       Text(
-                        news.date,
+                        widget.news.date,
                         style: TextStyle(
                           color: Colors.grey,
                           fontSize: 16,
@@ -85,7 +106,7 @@ class NewsDetailPage extends StatelessWidget {
                   SizedBox(height: 24),
                   // Full description
                   Text(
-                    news.description,
+                    widget.news.description,
                     style: TextStyle(
                       fontSize: 16,
                       height: 1.6,
@@ -95,9 +116,14 @@ class NewsDetailPage extends StatelessWidget {
                 ],
               ),
             ),
+            const BannerAdWidget(),
           ],
         ),
       ),
     );
+  }
+
+  void _onNewsTap() {
+    _interstitialAdService.showAd();
   }
 }

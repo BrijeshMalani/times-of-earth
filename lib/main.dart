@@ -5,15 +5,25 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'ui_screen/news_home.dart';
 
 // Global constant for storing OneSignal user ID
 String? osUserID;
 
+// AdMob ad unit IDs
+const String bannerAdUnitId =
+    'ca-app-pub-3940256099942544/6300978111'; // Test ad unit ID
+const String interstitialAdUnitId =
+    'ca-app-pub-3940256099942544/1033173712'; // Test ad unit ID
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await GetStorage.init();
+
+  // Initialize AdMob
+  await MobileAds.instance.initialize();
 
   if (!kIsWeb) {
     //Remove this method to stop OneSignal Debugging

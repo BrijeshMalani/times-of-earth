@@ -47,6 +47,7 @@ dependencies:
   share_plus: ^7.0.2
   url_launcher: ^6.1.11
   flutter_local_notifications: ^11.0.0
+  google_mobile_ads: ^4.0.0
 
 
 dev_dependencies:
