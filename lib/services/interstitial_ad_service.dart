@@ -1,37 +1,40 @@
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import '../main.dart';
 
 class InterstitialAdService {
   InterstitialAd? _interstitialAd;
-  bool _isLoaded = false;
+  bool _isAdLoaded = false;
 
   void loadAd() {
     InterstitialAd.load(
-      adUnitId: interstitialAdUnitId,
+      adUnitId: 'ca-app-pub-3940256099942544/1033173712',
       request: const AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
           _interstitialAd = ad;
-          _isLoaded = true;
+          _isAdLoaded = true;
+          print('Interstitial ad loaded successfully');
         },
         onAdFailedToLoad: (error) {
-          print('Interstitial ad failed to load: $error');
-          _isLoaded = false;
+          print('Interstitial ad failed to load: ${error.message}');
+          _isAdLoaded = false;
         },
       ),
     );
   }
 
   void showAd() {
-    if (_isLoaded && _interstitialAd != null) {
+    if (_isAdLoaded && _interstitialAd != null) {
       _interstitialAd!.show();
-      _interstitialAd = null;
-      _isLoaded = false;
-      loadAd(); // Preload next ad
+      print('Showing interstitial ad');
+    } else {
+      print('Ad not loaded yet');
+      loadAd(); // Try to load a new ad
     }
   }
 
   void dispose() {
     _interstitialAd?.dispose();
+    _interstitialAd = null;
+    _isAdLoaded = false;
   }
 }

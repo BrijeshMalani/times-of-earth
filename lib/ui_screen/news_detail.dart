@@ -18,7 +18,14 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
   @override
   void initState() {
     super.initState();
+    _loadAndShowAd();
+  }
+
+  Future<void> _loadAndShowAd() async {
     _interstitialAdService.loadAd();
+    // Wait for a short delay to ensure the ad has time to load
+    await Future.delayed(const Duration(seconds: 1));
+    _interstitialAdService.showAd();
   }
 
   @override
@@ -30,100 +37,128 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('News Detail'),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Hero image
-            Container(
-              width: double.infinity,
-              height: 300,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(widget.news.imageUrl),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Category
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      widget.news.category,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 16),
-                  // Title
-                  Text(
-                    widget.news.title,
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 16),
-                  // Author and date
-                  Row(
+      body: Stack(
+        children: [
+          CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                expandedHeight: 200.0,
+                pinned: true,
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Stack(
+                    fit: StackFit.expand,
                     children: [
-                      Icon(Icons.person, size: 20, color: Colors.grey),
-                      SizedBox(width: 8),
-                      Text(
-                        widget.news.author,
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 16,
-                        ),
+                      Image.network(
+                        widget.news.imageUrl,
+                        fit: BoxFit.cover,
                       ),
-                      SizedBox(width: 16),
-                      Icon(Icons.calendar_today, size: 20, color: Colors.grey),
-                      SizedBox(width: 8),
-                      Text(
-                        widget.news.date,
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 16,
+                      Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.transparent,
+                              Colors.black.withOpacity(0.7),
+                            ],
+                          ),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 24),
-                  // Full description
-                  Text(
-                    widget.news.description,
-                    style: TextStyle(
-                      fontSize: 16,
-                      height: 1.6,
-                    ),
-                  ),
-                  // You can add more content sections here
-                ],
+                ),
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  onPressed: () => Navigator.pop(context),
+                ),
               ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Category
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          widget.news.category,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      // Title
+                      Text(
+                        widget.news.title,
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      // Author and Date
+                      Row(
+                        children: [
+                          const Icon(Icons.person,
+                              size: 16, color: Colors.grey),
+                          const SizedBox(width: 8),
+                          Text(
+                            widget.news.author,
+                            style: const TextStyle(
+                              color: Colors.grey,
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          const Icon(Icons.calendar_today,
+                              size: 16, color: Colors.grey),
+                          const SizedBox(width: 8),
+                          Text(
+                            widget.news.date,
+                            style: const TextStyle(
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 24),
+                      // Full description
+                      Text(
+                        widget.news.description,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          height: 1.5,
+                        ),
+                      ),
+                      // Add bottom padding to account for the banner ad
+                      const SizedBox(height: 60),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          // Banner ad at the bottom
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Container(
+              color: Colors.white,
+              child: const BannerAdWidget(),
             ),
-            const BannerAdWidget(),
-          ],
-        ),
+          ),
+        ],
       ),
     );
-  }
-
-  void _onNewsTap() {
-    _interstitialAdService.showAd();
   }
 }

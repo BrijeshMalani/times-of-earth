@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
-import 'package:dumpal/common/sound_path.dart';
-import 'package:dumpal/ui_screen/dashboard/coin_animation.dart';
-import 'package:dumpal/ui_screen/upi_india_paymentgateway/upi_paymentscreen.dart';
+import 'package:web_news/common/sound_path.dart';
+import 'package:web_news/ui_screen/dashboard/coin_animation.dart';
+import 'package:web_news/ui_screen/upi_india_paymentgateway/upi_paymentscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:dumpal/controllers/CounterController.dart';
+import 'package:web_news/controllers/CounterController.dart';
 import 'package:get/get.dart';
 
 class Demo extends StatefulWidget {
