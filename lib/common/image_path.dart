@@ -1,0 +1,29 @@
+class ImagePath {
+  static String wifi = "assets/images/png/wifi.png";
+  static String logo = "assets/images/png/logo.png";
+  static String bigWinImage = "assets/images/bigWin.png";
+  static String backgroundLogin = 'assets/images/png/background_login.png';
+  static String background = 'assets/images/background.png';
+  static String diceImage = 'assets/images/dice.png';
+  static String menuImage = 'assets/images/menuIcom.png';
+  static String personImage = 'assets/images/personIcon.png';
+  static String oddButton = 'assets/images/oddButton.png';
+  static String oddButton1 = 'assets/images/oddButton1.png';
+  static String evenButton = 'assets/images/evenButton.png';
+  static String evenButton1 = 'assets/images/evenButton1.png';
+  static String ludoBgImage = 'assets/images/ludoBG.png';
+  static String diceMainImage = 'assets/images/diceImage.png';
+  static String digitBG = 'assets/images/digitBG.png';
+  static String icon1 = 'assets/images/icon1.png';
+  static String icon2 = 'assets/images/icon2.png';
+  static String icon3 = 'assets/images/icon3.png';
+  static String addMoney = 'assets/images/add_money.png';
+  static String winningBalance = 'assets/images/winning_balance.png';
+  static String withDrawalBg = 'assets/images/with_drawal_bg.png';
+  static String addMoneyBg = 'assets/images/add_money_bg.png';
+  static String winGame = 'assets/images/win.png';
+  static String loseGame = 'assets/images/biglose.png';
+  static String coin = 'assets/images/png/coin.png';
+  static String collectCoin = 'assets/images/png/collect_coin.png';
+  static String lottieAnimation = 'assets/animation/splash_animation.json';
+}
